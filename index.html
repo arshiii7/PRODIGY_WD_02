@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stopwatch</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 280px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    #time {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #2575fc;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 8px 14px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .start { background-color: #28a745; }
+    .pause { background-color: #ffc107; color: #333; }
+    .reset { background-color: #dc3545; }
+    .lap { background-color: #17a2b8; }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 15px;
+      max-height: 80px;
+      overflow-y: auto;
+    }
+
+    li {
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+    <h1>Stopwatch</h1>
+    <div id="time">00:00:00</div>
+
+    <button class="start" onclick="start()">Start</button>
+    <button class="pause" onclick="stop()">Pause</button>
+    <button class="reset" onclick="reset()">Reset</button>
+    <button class="lap" onclick="lap()">Lap</button>
+
+    <ul id="laps"></ul>
+  </div>
+
+  <script>
+    let sec = 0;
+    let timer = null;
+
+    function start() {
+      if (timer === null) {
+        timer = setInterval(function () {
+          sec++;
+          showTime();
+        }, 1000);
+      }
+    }
+
+    function stop() {
+      clearInterval(timer);
+      timer = null;
+    }
+
+    function reset() {
+      clearInterval(timer);
+      timer = null;
+      sec = 0;
+      showTime();
+      document.getElementById("laps").innerHTML = "";
+    }
+
+    function showTime() {
+      let h = Math.floor(sec / 3600);
+      let m = Math.floor((sec % 3600) / 60);
+      let s = sec % 60;
+
+      document.getElementById("time").innerHTML =
+        (h < 10 ? "0" + h : h) + ":" +
+        (m < 10 ? "0" + m : m) + ":" +
+        (s < 10 ? "0" + s : s);
+    }
+
+    function lap() {
+      if (timer !== null) {
+        let li = document.createElement("li");
+        li.innerHTML = document.getElementById("time").innerHTML;
+        document.getElementById("laps").appendChild(li);
+      }
+    }
+  </script>
+
+</body>
+</html>
